@@ -21,7 +21,7 @@ int main(void){
   // read values
   temperature = bme280_readTemperature(); // in °C
   pressure = bme280_readPressure(); // in hPa
-  humidity = bme280_humidity; // in %
+  humidity = bme280_humidity(); // in %
   
   for(;;){
     // main-loop

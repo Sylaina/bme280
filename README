@@ -11,13 +11,14 @@ examble source-code:
 #include "bme280.h"
 
 int main(void){
-  
+  // variables for sensor values
   float temperature = 0.0;
   float pressure = 0.0;
   float humidity = 0.0;
   
+  // init sensor
   bme280_init();
-  
+  // read values
   temperature = bme280_readTemperature(); // in °C
   pressure = bme280_readPressure(); // in hPa
   humidity = bme280_humidity; // in %

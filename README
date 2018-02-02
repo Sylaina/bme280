@@ -4,6 +4,17 @@ Using BME280 sensor from Bosch at AVR mikrocontrollers like Atmega328p
 This Library allowed you to use BME280 to sense temperature, pressure and humidity with AVR microcontroller like Atmega328.
 For communication with the BME280 I'll use my own I2C library.
 
+Default settings for sensor are:
+
+standby-time: 250 ms
+iir-filter: 8x
+temperature oversampling: 16x
+pressure oversampling: 16x
+mode: normal
+
+If you want to change this settings edit bme280_init(), for other settings refer datasheet.
+
+
 examble source-code:
 
 /*************BME280 examble*************/

@@ -20,7 +20,7 @@ int main(void){
   bme280_init();
   // read values
   temperature = bme280_readTemperature(); // in °C
-  pressure = bme280_readPressure(); // in hPa
+  pressure = bme280_readPressure()/100.0; // in mbar
   humidity = bme280_humidity(); // in %
   
   for(;;){

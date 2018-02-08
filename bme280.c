@@ -13,11 +13,11 @@ void bme280_init(void){
     if (bme280_read1Byte(BME280_REGISTER_CHIPID) == 0x60){
         // configure sensor
         i2c_start(BME_ADDR);
-        
+#ifdef BMP280
         // set humidity oversampling at 16x
         i2c_byte(BME280_REGISTER_CONTROLHUMID);
         i2c_byte(0x05);
-        
+#endif
         // set standby-time to 250 ms
         // set iir-filter to 8
         // set 3-wire spi at 00 (disable)
@@ -87,7 +87,7 @@ float bme280_readPressure(void){
     p = ((p + var1 + var2) >> 8) + (((int64_t)_bme280_calib.dig_P7)<<4);
     return (float)p/256ul;
 }
-
+#ifdef BME280
 float bme280_readHumiditiy(void){
     bme280_readTemperature(); // must be done first to get t_fine
     
@@ -112,7 +112,7 @@ float bme280_readHumiditiy(void){
     float h = (v_x1_u32r>>12);
     return  h / 1024.0;
 }
-
+#endif
 float bme280_readAltitude(float seaLevel){
     // seaLevel at hPa (mBar), equation from datasheet BMP180, page 16
     
@@ -191,11 +191,12 @@ void bme280_readCoefficients(void)
     _bme280_calib.dig_P7 = readS16_LE(BME280_REGISTER_DIG_P7);
     _bme280_calib.dig_P8 = readS16_LE(BME280_REGISTER_DIG_P8);
     _bme280_calib.dig_P9 = readS16_LE(BME280_REGISTER_DIG_P9);
-    
+#ifdef BME280
     _bme280_calib.dig_H1 = bme280_read1Byte(BME280_REGISTER_DIG_H1);
     _bme280_calib.dig_H2 = readS16_LE(BME280_REGISTER_DIG_H2);
     _bme280_calib.dig_H3 = bme280_read1Byte(BME280_REGISTER_DIG_H3);
     _bme280_calib.dig_H4 = (bme280_read1Byte(BME280_REGISTER_DIG_H4) << 4) | (bme280_read1Byte(BME280_REGISTER_DIG_H4+1) & 0xF);
     _bme280_calib.dig_H5 = (bme280_read1Byte(BME280_REGISTER_DIG_H5+1) << 4) | (bme280_read1Byte(BME280_REGISTER_DIG_H5) >> 4);
     _bme280_calib.dig_H6 = (int8_t)bme280_read1Byte(BME280_REGISTER_DIG_H6);
+#endif
 }

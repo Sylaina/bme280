@@ -2,7 +2,7 @@
 //  bme280.h
 //  i2c
 //
-//  Created by Michael Köhler on 09.10.17.
+//  Created by Michael Köhler on 09.02.18
 //
 //
 

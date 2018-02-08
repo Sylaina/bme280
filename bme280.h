@@ -12,6 +12,10 @@
 // i2c adress, for reading sensor "add" | 0x01, refer datasheet
 #define BME_ADDR (0x77<<1)
 
+// for BME280 define
+#define BME280
+// for BMP280 (same as BME280 without humitity sensor) uncomment #define above
+
 #include <stdio.h>
 #include "i2c.h"
 
@@ -30,13 +34,14 @@ typedef struct
     int16_t  dig_P7;
     int16_t  dig_P8;
     int16_t  dig_P9;
-    
+#ifdef BME280
     uint8_t  dig_H1;
     int16_t  dig_H2;
     uint8_t  dig_H3;
     int16_t  dig_H4;
     int16_t  dig_H5;
     int8_t   dig_H6;
+#endif
 } bme280_calib_data;
 
 enum
@@ -54,14 +59,14 @@ enum
     BME280_REGISTER_DIG_P7              = 0x9A,
     BME280_REGISTER_DIG_P8              = 0x9C,
     BME280_REGISTER_DIG_P9              = 0x9E,
-    
+#ifdef BME280
     BME280_REGISTER_DIG_H1              = 0xA1,
     BME280_REGISTER_DIG_H2              = 0xE1,
     BME280_REGISTER_DIG_H3              = 0xE3,
     BME280_REGISTER_DIG_H4              = 0xE4,
     BME280_REGISTER_DIG_H5              = 0xE5,
     BME280_REGISTER_DIG_H6              = 0xE7,
-    
+#endif
     BME280_REGISTER_CHIPID             = 0xD0,
     BME280_REGISTER_VERSION            = 0xD1,
     BME280_REGISTER_SOFTRESET          = 0xE0,
@@ -73,14 +78,18 @@ enum
     BME280_REGISTER_CONFIG             = 0xF5,
     BME280_REGISTER_PRESSUREDATA       = 0xF7,
     BME280_REGISTER_TEMPDATA           = 0xFA,
+#ifdef BME280
     BME280_REGISTER_HUMIDDATA          = 0xFD,
+#endif
 };
 
 void bme280_init(void);
 
 float bme280_readTemperature(void);
 float bme280_readPressure(void);
+#ifdef BME280
 float bme280_readHumiditiy(void);
+#endif
 float bme280_readAltitude(float seaLevel);
 
 uint8_t bme280_read1Byte(uint8_t addr);

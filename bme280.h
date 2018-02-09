@@ -2,19 +2,69 @@
 //  bme280.h
 //  i2c
 //
-//  Created by Michael Köhler on 09.02.18
+//  Created by Michael Köhler on 09.10.17.
 //
 //
 
 #ifndef bme280_h
 #define bme280_h
 
+
+#define OVER_0x		0x00 //skipped, output set to 0x80000
+#define OVER_1x		0x01
+#define OVER_2x		0x02
+#define OVER_4x		0x03
+#define OVER_8x		0x04
+#define OVER_16x	0x05
+
+#define BME280_FORCED_MODE 0x00
+#define BME280_NORMAL_MODE 0x03
+#define BME280_SLEEP_MODE 0x00
+
+#define BME280_STANDBY_500us	0x00
+#define BME280_STANDBY_62500us	0x01
+#define BME280_STANDBY_125ms	0x02
+#define BME280_STANDBY_250ms	0x03
+#define BME280_STANDBY_500ms	0x04
+#define BME280_STANDBY_1000ms	0x05
+#define BME280_STANDBY_10ms		0x06
+#define BME280_STANDBY_20ms		0x07
+
+#define BME280_IIR_OFF	0x00
+#define BME280_IIR_2x	0x01
+#define BME280_IIR_4x	0x02
+#define BME280_IIR_8x	0x03
+#define BME280_IIR_16x	0x04
+
+#define BME280_SPI_OFF	0x00
+#define BME280_SPI_ON	0x01
+
+/* TODO: configure Sensor */
+
 // i2c adress, for reading sensor "add" | 0x01, refer datasheet
 #define BME_ADDR (0x77<<1)
-
 // for BME280 define
 #define BME280
 // for BMP280 (same as BME280 without humitity sensor) uncomment #define above
+
+/****** settings *******/
+// default: Standby-Time = 250ms, IIR-Filter = 16x, SPI disable, Oversampling for all Sensors = 16x, Normal Mode
+
+// Standby-Time, IIR-Filter, SPI Disable
+#define BME280_CONFIG		(BME280_STANDBY_250ms << 5)|(BME280_IIR_8x << 2)|(BME280_SPI_OFF)
+// Temperatur-Sensor
+#define BME280_TEMP_CONFIG	OVER_16x
+// Pressure-Sensor
+#define BME280_PRESS_CONFIG	OVER_16x
+
+#ifdef BME280
+// Humitity-Sensor
+#define BME280_HUM_CONFIG	OVER_16x
+#elif
+#define BME280_HUM_CONFIG	OVER_0x	//no humitity-sensor, skipped
+#endif
+// Mode
+#define BME280_MODE_CONFIG	BME280_NORMAL_MODE
 
 #include <stdio.h>
 #include "i2c.h"

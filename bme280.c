@@ -2,7 +2,7 @@
 //  bme280.c
 //  i2c
 //
-//  Created by Michael Köhler on 09.02.18
+//  Created by Michael Köhler on 09.10.17.
 //
 //
 
@@ -14,24 +14,18 @@ void bme280_init(void){
         // configure sensor
         i2c_start(BME_ADDR);
 #ifdef BMP280
-        // set humidity oversampling at 16x
         i2c_byte(BME280_REGISTER_CONTROLHUMID);
-        i2c_byte(0x05);
+        i2c_byte(BME280_HUM_CONFIG);
 #endif
-        // set standby-time to 250 ms
-        // set iir-filter to 8
-        // set 3-wire spi at 00 (disable)
         i2c_byte(BME280_REGISTER_CONFIG);
-        i2c_byte(0x6c);
+        i2c_byte(BME280_CONFIG);
         
-        // set temp-oversampling at 16x
-        // set press-oversampling at 16x
-        // set mode to normal mode
         i2c_byte(BME280_REGISTER_CONTROL);
-        i2c_byte(0xb7);
+        i2c_byte((BME280_TEMP_CONFIG << 5)|(BME280_PRESS_CONFIG << 2)|(BME280_MODE_CONFIG));
         
         i2c_stop();
         
+		// read coefficients
         bme280_readCoefficients();
     }
 }

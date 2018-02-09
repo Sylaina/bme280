@@ -12,7 +12,7 @@ temperature oversampling: 16x
 pressure oversampling: 16x
 mode: normal
 
-If you want to change this settings edit bme280_init(), for other settings refer datasheet.
+If you want to change this settings edit bme280.h (look at /* TODO:...).
 
 
 examble source-code:

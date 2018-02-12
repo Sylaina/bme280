@@ -17,7 +17,7 @@
 #define OVER_8x		0x04
 #define OVER_16x	0x05
 
-#define BME280_FORCED_MODE 0x00
+#define BME280_FORCED_MODE 0x01
 #define BME280_NORMAL_MODE 0x03
 #define BME280_SLEEP_MODE 0x00
 

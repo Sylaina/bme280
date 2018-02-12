@@ -82,7 +82,7 @@ float bme280_readPressure(void){
     return (float)p/256ul;
 }
 #ifdef BME280
-float bme280_readHumiditiy(void){
+float bme280_readHumidity(void){
     bme280_readTemperature(); // must be done first to get t_fine
     
     int32_t adc_H = bme280_read2Byte(BME280_REGISTER_HUMIDDATA);

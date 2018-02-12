@@ -41,8 +41,8 @@
 
 /* TODO: configure Sensor */
 
-// i2c adress, for reading sensor "add" | 0x01, refer datasheet
-#define BME_ADDR (0x77<<1)
+// i2c adress
+#define BME_ADDR 0xEE
 // for BME280 define
 #define BME280
 // for BMP280 (same as BME280 without humitity sensor) uncomment #define above

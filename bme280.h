@@ -41,7 +41,9 @@
 
 /* TODO: configure Sensor */
 
-// i2c adress
+// i2c adress,
+// using 8-bit-mode (slave-mode) for i2c-library
+// if you use your own library for twi check I2C-adress-handle
 #define BME_ADDR 0xEE
 // for BME280 define
 #define BME280

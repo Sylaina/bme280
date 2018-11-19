@@ -16,7 +16,7 @@ If you want to change this settings edit bme280.h (look at /* TODO:...).
 
 
 examble source-code:
-
+```c
 /*************BME280 examble*************/
 #include <stdlib.h>
 #include "bme280.h"

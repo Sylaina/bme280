@@ -140,7 +140,7 @@ void bme280_init(void);
 float bme280_readTemperature(void);
 float bme280_readPressure(void);
 #ifdef BME280
-float bme280_readHumiditiy(void);
+float bme280_readHumidity(void);
 #endif
 float bme280_readAltitude(float seaLevel);
 

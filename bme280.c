@@ -9,10 +9,9 @@
 #include "bme280.h"
 #include <math.h>       // for NAN
 
-void bme280_init(void){
-    if (bme280_read1Byte(BME280_REGISTER_CHIPID) == 0x60){
-        // configure sensor
-        i2c_start(0xec|(SDO<<1));
+uint8_t bme280_init(void){
+	uint8_t returnValue = 0xff;
+    	i2c_start(0xec|(SDO<<1));
     	switch (bme280_read1Byte(BME280_REGISTER_CHIPID)){
 		case 0x60:
 			// BME280 connected
@@ -28,6 +27,7 @@ void bme280_init(void){
         	// wrong chip-id, abort init
         	return 0xff;
     	}
+        
         i2c_byte(BME280_REGISTER_CONFIG);
         i2c_byte(BME280_CONFIG);
         
@@ -38,7 +38,7 @@ void bme280_init(void){
         
 		// read coefficients
         bme280_readCoefficients();
-    }
+	return returnValue;
 }
 
 float bme280_readTemperature(void){

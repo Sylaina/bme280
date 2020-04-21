@@ -45,7 +45,7 @@ For Arduino-Users:
 Remember that this library is a c-library. Type
 
 extern "C"{
-  #include "lcd.h"
+  #include "bme280.h"
 }
 
 for include.

@@ -133,7 +133,7 @@ enum
 #endif
 };
 
-void bme280_init(void);
+uint8_t bme280_init(void);
 
 float bme280_readTemperature(void);
 float bme280_readPressure(void);

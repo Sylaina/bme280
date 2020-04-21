@@ -9,7 +9,10 @@
 #ifndef bme280_h
 #define bme280_h
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 #define OVER_0x		0x00 //skipped, output set to 0x80000
 #define OVER_1x		0x01
 #define OVER_2x		0x02
@@ -41,13 +44,13 @@
 
 /* TODO: configure Sensor */
 
-// i2c adress,
-// using 8-bit-mode (slave-mode) for i2c-library
-// if you use your own library for twi check I2C-adress-handle
-#define BME_ADDR 0xEE
 // for BME280 define
 #define BME280
 // for BMP280 (same as BME280 without humitity sensor) uncomment #define above
+    
+// define SDO-pin-logic-level for I2C address (check wiring of your sensor)
+// for example SDO is connected to high-level
+#define SDO 1
 
 /****** settings *******/
 // default: Standby-Time = 250ms, IIR-Filter = 16x, SPI disable, Oversampling for all Sensors = 16x, Normal Mode
@@ -58,13 +61,8 @@
 #define BME280_TEMP_CONFIG	OVER_16x
 // Pressure-Sensor
 #define BME280_PRESS_CONFIG	OVER_16x
-
-#ifdef BME280
 // Humitity-Sensor
 #define BME280_HUM_CONFIG	OVER_16x
-#elif
-#define BME280_HUM_CONFIG	OVER_0x	//no humitity-sensor, skipped
-#endif
 // Mode
 #define BME280_MODE_CONFIG	BME280_NORMAL_MODE
 
@@ -156,4 +154,9 @@ int16_t readS16_LE(uint8_t reg);
 
 volatile uint32_t t_fine;
 volatile bme280_calib_data _bme280_calib;
+
+#ifdef __cplusplus
+}
+#endif
+    
 #endif /* bme280_h */

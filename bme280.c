@@ -12,11 +12,22 @@
 void bme280_init(void){
     if (bme280_read1Byte(BME280_REGISTER_CHIPID) == 0x60){
         // configure sensor
-        i2c_start(BME_ADDR);
-#ifdef BMP280
-        i2c_byte(BME280_REGISTER_CONTROLHUMID);
-        i2c_byte(BME280_HUM_CONFIG);
-#endif
+        i2c_start(0xec|(SDO<<1));
+    	switch (bme280_read1Byte(BME280_REGISTER_CHIPID)){
+		case 0x60:
+			// BME280 connected
+			returnValue = 0x00;
+			i2c_byte(BME280_REGISTER_CONTROLHUMID);
+        	i2c_byte(BME280_HUM_CONFIG);
+        	break;
+        case 0x58:
+        	// BMP280 connected
+        	returnValue = 0x01;
+        	break;
+        default:
+        	// wrong chip-id, abort init
+        	return 0xff;
+    	}
         i2c_byte(BME280_REGISTER_CONFIG);
         i2c_byte(BME280_CONFIG);
         
@@ -116,20 +127,20 @@ float bme280_readAltitude(float seaLevel){
 
 uint8_t bme280_read1Byte(uint8_t addr){
     uint8_t value;
-    i2c_start(BME_ADDR);
+    i2c_start(0xec|(SDO<<1));
     i2c_byte(addr);
     i2c_stop();
-    i2c_start(BME_ADDR|0x01);
+    i2c_start(0xec|(SDO<<1)|0x01);
     value = i2c_readNAck();
     i2c_stop();
     return value;
 }
 uint16_t bme280_read2Byte(uint8_t addr){
     uint16_t value;
-    i2c_start(BME_ADDR);
+    i2c_start(0xec|(SDO<<1));
     i2c_byte(addr);
     i2c_stop();
-    i2c_start(BME_ADDR|0x01);
+    i2c_start(0xec|(SDO<<1)|0x01);
     value = i2c_readAck();
     value <<= 8;
     value |= i2c_readNAck();
@@ -138,10 +149,10 @@ uint16_t bme280_read2Byte(uint8_t addr){
 }
 uint32_t bme280_read3Byte(uint8_t addr){
     uint32_t value;
-    i2c_start(BME_ADDR);
+    i2c_start(0xec|(SDO<<1));
     i2c_byte(addr);
     i2c_stop();
-    i2c_start(BME_ADDR|0x01);
+    i2c_start(0xec|(SDO<<1)|0x01);
     value = i2c_readAck();
     value <<= 8;
     value |= i2c_readAck();

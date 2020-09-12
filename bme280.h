@@ -123,12 +123,12 @@ enum
     
     BME280_REGISTER_CAL26              = 0xE1,  // R calibration stored in 0xE1-0xF0
     
-    BME280_REGISTER_CONTROLHUMID       = 0xF2,
     BME280_REGISTER_CONTROL            = 0xF4,
     BME280_REGISTER_CONFIG             = 0xF5,
     BME280_REGISTER_PRESSUREDATA       = 0xF7,
     BME280_REGISTER_TEMPDATA           = 0xFA,
 #ifdef BME280
+    BME280_REGISTER_CONTROLHUMID       = 0xF2,
     BME280_REGISTER_HUMIDDATA          = 0xFD,
 #endif
 };

@@ -8,25 +8,50 @@
 
 #include "bme280.h"
 #include <math.h>       // for NAN
+#include <util/delay.h> // needed delay after softreset
 
 uint8_t bme280_init(void){
-	uint8_t returnValue = 0xff;
-    	i2c_start(0xec|(SDO<<1));
-    	switch (bme280_read1Byte(BME280_REGISTER_CHIPID)){
-		case 0x60:
-			// BME280 connected
-			returnValue = 0x00;
-			i2c_byte(BME280_REGISTER_CONTROLHUMID);
+    uint8_t returnValue = 0xff;
+    switch (bme280_read1Byte(BME280_REGISTER_CHIPID)){
+        case 0x60:
+        	// BME280 connected
+        	returnValue = 0x00;
+        
+        	// init softreset of sensor
+        	i2c_start(0xec|(SDO<<1));
+        	i2c_byte(BME280_REGISTER_SOFTRESET);
+        	i2c_byte(0xB6);
+        	i2c_stop();
+        	// wait for finished softreset
+        	_delay_ms(10);
+        
+        	// start to write config via I2C
+        	i2c_start(0xec|(SDO<<1));
+        
+        	// write config for humidity
+        	i2c_byte(BME280_REGISTER_CONTROLHUMID);
         	i2c_byte(BME280_HUM_CONFIG);
         	break;
         case 0x58:
         	// BMP280 connected
         	returnValue = 0x01;
+        
+        	// init softreset of sensor
+        	i2c_start(0xec|(SDO<<1));
+        	i2c_byte(BME280_REGISTER_SOFTRESET);
+        	i2c_byte(0xB6);
+        	i2c_stop();
+        
+        	// wait for finished softreset
+        	_delay_ms(10);
+        
+        	// start to write config via I2C
+        	i2c_start(0xec|(SDO<<1));
         	break;
         default:
         	// wrong chip-id, abort init
         	return 0xff;
-    	}
+    }
         
         i2c_byte(BME280_REGISTER_CONFIG);
         i2c_byte(BME280_CONFIG);
@@ -115,7 +140,7 @@ float bme280_readHumidity(void){
     v_x1_u32r = (v_x1_u32r < 0) ? 0 : v_x1_u32r;
     v_x1_u32r = (v_x1_u32r > 419430400) ? 419430400 : v_x1_u32r;
     float h = (v_x1_u32r>>12);
-    return  h / 1024.0;
+    return  h / 1024;
 }
 #endif
 float bme280_readAltitude(float seaLevel){

@@ -10,6 +10,7 @@ standby-time: 250 ms
 iir-filter: 8x
 temperature oversampling: 16x
 pressure oversampling: 16x
+humidity oversampling: 16x
 mode: normal
 
 If you want to change this settings edit bme280.h (look at /* TODO:...).
@@ -39,13 +40,3 @@ int main(void){
   }
   return 0; // never reached
 }
-
-For Arduino-Users:
-
-Remember that this library is a c-library. Type
-
-extern "C"{
-  #include "bme280.h"
-}
-
-for include.

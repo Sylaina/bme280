@@ -43,14 +43,11 @@ extern "C" {
 #define BME280_SPI_ON	0x01
 
 /* TODO: configure Sensor */
-
-// for BME280 define
-#define BME280
-// for BMP280 (same as BME280 without humitity sensor) uncomment #define above
     
 // define SDO-pin-logic-level for I2C address (check wiring of your sensor)
-// for example SDO is connected to high-level
-#define SDO 1
+// !!!SDO for sensor 1 asumed to high-level by code, for sensor 2 asumed to low-level by code!!!
+// for example just one sensor is connected,
+#define SENSORS 2
 
 /****** settings *******/
 // default: Standby-Time = 250ms, IIR-Filter = 16x, SPI disable, Oversampling for all Sensors = 16x, Normal Mode
@@ -84,14 +81,14 @@ typedef struct
     int16_t  dig_P7;
     int16_t  dig_P8;
     int16_t  dig_P9;
-#ifdef BME280
+
     uint8_t  dig_H1;
     int16_t  dig_H2;
     uint8_t  dig_H3;
     int16_t  dig_H4;
     int16_t  dig_H5;
     int8_t   dig_H6;
-#endif
+
 } bme280_calib_data;
 
 enum
@@ -109,14 +106,14 @@ enum
     BME280_REGISTER_DIG_P7              = 0x9A,
     BME280_REGISTER_DIG_P8              = 0x9C,
     BME280_REGISTER_DIG_P9              = 0x9E,
-#ifdef BME280
+
     BME280_REGISTER_DIG_H1              = 0xA1,
     BME280_REGISTER_DIG_H2              = 0xE1,
     BME280_REGISTER_DIG_H3              = 0xE3,
     BME280_REGISTER_DIG_H4              = 0xE4,
     BME280_REGISTER_DIG_H5              = 0xE5,
     BME280_REGISTER_DIG_H6              = 0xE7,
-#endif
+
     BME280_REGISTER_CHIPID             = 0xD0,
     BME280_REGISTER_VERSION            = 0xD1,
     BME280_REGISTER_SOFTRESET          = 0xE0,
@@ -127,33 +124,31 @@ enum
     BME280_REGISTER_CONFIG             = 0xF5,
     BME280_REGISTER_PRESSUREDATA       = 0xF7,
     BME280_REGISTER_TEMPDATA           = 0xFA,
-#ifdef BME280
+
     BME280_REGISTER_CONTROLHUMID       = 0xF2,
     BME280_REGISTER_HUMIDDATA          = 0xFD,
-#endif
+
 };
 
-uint8_t bme280_init(void);
+uint8_t bme280_init(uint8_t sensor);
 
-float bme280_readTemperature(void);
-float bme280_readPressure(void);
-#ifdef BME280
-float bme280_readHumidity(void);
-#endif
-float bme280_readAltitude(float seaLevel);
+float bme280_readTemperature(uint8_t sensor);
+float bme280_readPressure(uint8_t sensor);
+float bme280_readHumidity(uint8_t sensor);
+float bme280_readAltitude(float seaLevel, uint8_t sensor);
 
-uint8_t bme280_read1Byte(uint8_t addr);
-uint16_t bme280_read2Byte(uint8_t addr);
-uint32_t bme280_read3Byte(uint8_t addr);
+uint8_t bme280_read1Byte(uint8_t addr, uint8_t sensor);
+uint16_t bme280_read2Byte(uint8_t addr, uint8_t sensor);
+uint32_t bme280_read3Byte(uint8_t addr, uint8_t sensor);
 
-void bme280_readCoefficients(void);
+void bme280_readCoefficients(uint8_t sensor);
 
-uint16_t read16_LE(uint8_t reg);
-int16_t readS16(uint8_t reg);
-int16_t readS16_LE(uint8_t reg);
+uint16_t read16_LE(uint8_t reg, uint8_t sensor);
+int16_t readS16(uint8_t reg, uint8_t sensor);
+int16_t readS16_LE(uint8_t reg, uint8_t sensor);
 
-volatile uint32_t t_fine;
-volatile bme280_calib_data _bme280_calib;
+volatile uint32_t t_fine[SENSORS];
+volatile bme280_calib_data _bme280_calib[SENSORS];
 
 #ifdef __cplusplus
 }

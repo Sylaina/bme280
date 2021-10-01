@@ -10,11 +10,11 @@ int main(void){
   float humidity = 0.0;
   
   // init sensor
-  bme280_init();
+  bme280_init(0);
   // read values
-  temperature = bme280_readTemperature(); // in °C
-  pressure = bme280_readPressure()/100.0; // in mbar
-  humidity = bme280_readHumidity(); // in %
+  temperature = bme280_readTemperature(0); // in °C
+  pressure = bme280_readPressure(0)/100.0; // in mbar
+  humidity = bme280_readHumidity(0); // in %
   
   for(;;){
     // main-loop

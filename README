@@ -16,7 +16,7 @@ mode: normal
 If you want to change this settings edit bme280.h (look at /* TODO:...).
 
 
-examble source-code:
+example source-code:
 
 /*************BME280 examble*************/
 #include <stdlib.h>
